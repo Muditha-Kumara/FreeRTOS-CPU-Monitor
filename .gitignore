@@ -1,32 +1,28 @@
-# Prerequisites
-*.d
+#my
+./my
+./project
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# ESP-IDF build output
+/build/
+/sdkconfig
+/sdkconfig.old
+/partition_table.csv
+/bootloader/
+.projectile
+.cproject
+.settings/
+.idea/
+.vscode/
+*.pyc
+*.pyo
+*.env
+*.venv
+.env/
+.venv/
+__pycache__/
+*.log
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Optional: ignore generated files in your component
+*.bin
+*.elf
+*.map
