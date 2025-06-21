@@ -56,7 +56,8 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         goto exit;
     }
 
-    printf("| Task | Core | Run Time | Percentage | Stack Watermark\n");
+    printf("| %-16s | %-10s | %-10s | %-10s | %-16s |\n", "Task", "Core", "Run Time", "Percent", "Stack Watermark");
+    printf("|------------------|------------|------------|------------------|\n");
     // Prepare per-core usage counters
     uint32_t core_elapsed_time[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
     for (int i = 0; i < start_array_size; i++)
@@ -81,7 +82,7 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
             {
                 core_elapsed_time[core_id] += task_elapsed_time;
             }
-            printf("| %s | %d | %" PRIu32 " | %" PRIu32 "%% | %" PRIu32 "\n",
+            printf("| %-16s | %-10d | %-10" PRIu32 " | %-10" PRIu32 "%% | %-16" PRIu32 " |\n",
                    start_array[i].pcTaskName, core_id, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark);
         }
     }
