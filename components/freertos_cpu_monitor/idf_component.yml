@@ -1,0 +1,4 @@
+version: "0.1.0"
+description: "FreeRTOS CPU and Task Monitor component for ESP-IDF."
+dependencies:
+  idf: ">=4.4"

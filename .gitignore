@@ -1,6 +1,6 @@
 #my
-./my
-./project
+/my/
+/project/
 
 # ESP-IDF build output
 /build/
