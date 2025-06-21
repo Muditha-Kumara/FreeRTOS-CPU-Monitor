@@ -31,7 +31,7 @@ void app_main(void)
         xTaskCreatePinnedToCore(spin_task, task_names[i], 1024, NULL, SPIN_TASK_PRIO, NULL, tskNO_AFFINITY);
     }
     xTaskCreatePinnedToCore(spin_task, "1024 * 2 stack", 1024 * 2, NULL, SPIN_TASK_PRIO, NULL, tskNO_AFFINITY);
-    xTaskCreatePinnedToCore(spin_task, "priority 1", 1024, NULL, 1, NULL, tskNO_AFFINITY);
+    xTaskCreatePinnedToCore(spin_task, "priority 1", 1024, NULL, 5, NULL, tskNO_AFFINITY);
     // Initialize the FreeRTOS CPU monitor (creates stats task)
     freertos_cpu_monitor_init();
 }

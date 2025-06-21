@@ -12,6 +12,25 @@
 
 static TaskHandle_t stats_task_handle = NULL;
 
+static const char *task_state_to_str(eTaskState state)
+{
+    switch (state)
+    {
+    case eRunning:
+        return "RUN";
+    case eReady:
+        return "RDY";
+    case eBlocked:
+        return "BLK";
+    case eSuspended:
+        return "SUS";
+    case eDeleted:
+        return "DEL";
+    default:
+        return "UNK";
+    }
+}
+
 static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
 {
     TaskStatus_t *start_array = NULL, *end_array = NULL;
@@ -56,8 +75,8 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         goto exit;
     }
 
-    printf("| %-16s | %-10s | %-10s | %-10s | %-16s |\n", "Task", "Core", "Run Time", "Percent", "Stack Watermark");
-    printf("|------------------|------------|------------|------------------|\n");
+    printf("| %-16s | %-10s | %-10s | %-8s | %-16s | %-6s | %-8s | %-8s |\n", "Task", "Core", "Run Time", "Percent", "Stack Watermark", "State", "CurPrio", "BasePrio");
+    printf("|------------------|------------|------------|----------|------------------|--------|----------|----------|\n");
     // Prepare per-core usage counters
     uint32_t core_elapsed_time[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
     for (int i = 0; i < start_array_size; i++)
@@ -82,8 +101,9 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
             {
                 core_elapsed_time[core_id] += task_elapsed_time;
             }
-            printf("| %-16s | %-10d | %-10" PRIu32 " | %-10" PRIu32 "%% | %-16" PRIu32 " |\n",
-                   start_array[i].pcTaskName, core_id, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark);
+            printf("| %-16s | %-10d | %-10" PRIu32 " | %-7" PRIu32 "%% | %-16" PRIu32 " | %-6s | %-8u | %-8u |\n",
+                   start_array[i].pcTaskName, core_id, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark,
+                   task_state_to_str(start_array[i].eCurrentState), start_array[i].uxCurrentPriority, start_array[i].uxBasePriority);
         }
     }
     for (int i = 0; i < start_array_size; i++)
