@@ -164,22 +164,34 @@ CPU% = (TaskElapsedTime / (TotalElapsedTime * NumberOfCores)) * 100
 
 ## 🖨️ Example Output
 
-The output will look like:
+The actual output from the current implementation (see logs via serial monitor) will look like:
 
 ```
+I (12345) cpu_monitor: 
+
 Getting real time stats over 1000 ticks
-| Task      | Run Time | Percentage
-| IDLE0     | 206251   | 10%
-| IDLE1     | 464785   | 23%
-| wifi      | 45213    | 2%
-| main      | 120000   | 6%
-| eventTask | 80000    | 4%
-| Tmr Svc   | 0        | 0%
-| esp_timer | 0        | 0%
-| ipc1      | 0        | 0%
-| ipc0      | 0        | 0%
-Real time stats obtained
+I (12345) cpu_monitor: | Task             | Core       | Run Time   | Percent   | Stack Watermark   | State  | CurPrio  | BasePrio |
+I (12345) cpu_monitor: |------------------|------------|------------|-----------|-------------------|--------|----------|----------|
+I (12345) cpu_monitor: | IDLE0            | 0          | 206251     | 10%       | 1024              | RUN    | 0        | 0        |
+I (12345) cpu_monitor: | IDLE1            | 1          | 464785     | 23%       | 1024              | RUN    | 0        | 0        |
+I (12345) cpu_monitor: | wifi             | 0          | 45213      | 2%        | 512               | RDY    | 1        | 1        |
+I (12345) cpu_monitor: | main             | 0          | 120000     | 6%        | 2048              | RDY    | 1        | 1        |
+I (12345) cpu_monitor: | eventTask        | 1          | 80000      | 4%        | 1024              | BLK    | 1        | 1        |
+I (12345) cpu_monitor: | Tmr Svc          | 0          | 0          | 0%        | 1024              | SUS    | 1        | 1        |
+I (12345) cpu_monitor: | esp_timer        | 1          | 0          | 0%        | 1024              | SUS    | 1        | 1        |
+I (12345) cpu_monitor: | ipc1             | 1          | 0          | 0%        | 1024              | SUS    | 1        | 1        |
+I (12345) cpu_monitor: | ipc0             | 0          | 0          | 0%        | 1024              | SUS    | 1        | 1        |
+I (12345) cpu_monitor: 
+Per-core overall CPU usage:
+I (12345) cpu_monitor: Core 0: 18%
+I (12345) cpu_monitor: Core 1: 27%
+I (12345) cpu_monitor: Real time stats obtained
 ```
+
+- The log prefix (e.g., `I (12345) cpu_monitor:`) is from ESP-IDF logging.
+- The table includes task name, core, run time, percent, stack watermark, state, current and base priority.
+- Per-core CPU usage is shown after the table.
+- Task names, run times, and percentages will vary depending on your running tasks and system state.
 
 ### Memory Footprint
 
