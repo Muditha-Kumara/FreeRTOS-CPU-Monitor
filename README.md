@@ -5,6 +5,61 @@
 ![MQTT](https://img.shields.io/badge/MQTT-Integrated-orange?logo=eclipse-mosquitto)
 ![Dual Core](https://img.shields.io/badge/Dual%20Core-Supported-9cf)
 
+## 🌟 Project Vision
+
+Empower ESP32 developers with real-time, actionable insights into system performance. This project provides a professional, plug-and-play ESP-IDF component for monitoring CPU usage, task statistics, and system health, with seamless telemetry for remote diagnostics and visualization. The goal is to simplify performance tuning, debugging, and long-term monitoring for embedded applications.
+
+## 🏗️ Architecture Overview
+
+The system is structured as a modular ESP-IDF component that integrates with FreeRTOS and optional MQTT telemetry. Its main architectural elements are:
+
+- **CPU & Task Monitor Core**: Collects per-core and per-task statistics using FreeRTOS APIs.
+- **Heap Monitor**: Tracks memory usage and fragmentation.
+- **MQTT Telemetry Module**: Publishes metrics in JSON format to a configurable broker/topic.
+- **Configuration Layer**: Allows flexible setup via `cpu_monitor_config_t`.
+- **Visualization Integration**: Data is ready for Grafana/Prometheus dashboards.
+
+**Component Interaction Diagram:**
+
+```
++-------------------+
+|   Application     |
++-------------------+
+          |
+          v
++-------------------+
+| cpu_monitor_init  |
++-------------------+
+          |
+          v
++-------------------+
+|  CPU/Task Monitor |<---+---+---+
++-------------------+    |   |   |
+          |              |   |   |
+          v              |   |   |
++-------------------+    |   |   |
+|   Heap Monitor    |    |   |   |
++-------------------+    |   |   |
+          |              |   |   |
+          v              |   |   |
++-------------------+    |   |   |
+|  MQTT Telemetry   |----+   |   |
++-------------------+        |   |
+          |                  |   |
+          v                  |   |
++-------------------+        |   |
+|   MQTT Broker     |<-------+   |
++-------------------+            |
+          |                      |
+          v                      |
++-------------------+            |
+| Visualization     |<-----------+
+| (Grafana, etc.)   |
++-------------------+
+```
+
+---
+
 A professional-grade ESP-IDF component for real-time system monitoring on ESP32 (single/dual-core). Provides per-task CPU usage, core affinity tracking, heap analysis, and MQTT telemetry.
 
 ![Dashboard Preview](docs/assets/dashboard-preview.png) *(Example Grafana Dashboard)*
