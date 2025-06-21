@@ -1,0 +1,9 @@
+menu "FreeRTOS CPU Monitor Configuration"
+
+config FREERTOS_CPU_MONITOR_ENABLE
+    bool "Enable FreeRTOS CPU Monitor"
+    default y
+    help
+        Enable or disable the FreeRTOS CPU Monitor component.
+
+endmenu
