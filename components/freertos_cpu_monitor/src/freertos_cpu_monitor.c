@@ -56,7 +56,9 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         goto exit;
     }
 
-    printf("| Task | Run Time | Percentage | Stack Watermark\n");
+    printf("| Task | Core | Run Time | Percentage | Stack Watermark\n");
+    // Prepare per-core usage counters
+    uint32_t core_elapsed_time[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
     for (int i = 0; i < start_array_size; i++)
     {
         int k = -1;
@@ -74,8 +76,13 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         {
             uint32_t task_elapsed_time = end_array[k].ulRunTimeCounter - start_array[i].ulRunTimeCounter;
             uint32_t percentage_time = (task_elapsed_time * 100UL) / (total_elapsed_time * CONFIG_FREERTOS_NUMBER_OF_CORES);
-            printf("| %s | %" PRIu32 " | %" PRIu32 "%% | %" PRIu32 "\n",
-                   start_array[i].pcTaskName, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark);
+            int core_id = start_array[i].xCoreID;
+            if (core_id >= 0 && core_id < CONFIG_FREERTOS_NUMBER_OF_CORES)
+            {
+                core_elapsed_time[core_id] += task_elapsed_time;
+            }
+            printf("| %s | %d | %" PRIu32 " | %" PRIu32 "%% | %" PRIu32 "\n",
+                   start_array[i].pcTaskName, core_id, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark);
         }
     }
     for (int i = 0; i < start_array_size; i++)
@@ -91,6 +98,13 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         {
             printf("| %s | Created\n", end_array[i].pcTaskName);
         }
+    }
+    // Print per-core overall usage
+    printf("\nPer-core overall CPU usage:\n");
+    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++)
+    {
+        uint32_t core_percent = (core_elapsed_time[core] * 100UL) / total_elapsed_time;
+        printf("Core %d: %" PRIu32 "%%\n", core, core_percent);
     }
     ret = ESP_OK;
 
