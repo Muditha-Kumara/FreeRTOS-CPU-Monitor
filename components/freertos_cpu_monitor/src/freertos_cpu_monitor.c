@@ -56,7 +56,7 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         goto exit;
     }
 
-    printf("| Task | Run Time | Percentage\n");
+    printf("| Task | Run Time | Percentage | Stack Watermark\n");
     for (int i = 0; i < start_array_size; i++)
     {
         int k = -1;
@@ -74,7 +74,8 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
         {
             uint32_t task_elapsed_time = end_array[k].ulRunTimeCounter - start_array[i].ulRunTimeCounter;
             uint32_t percentage_time = (task_elapsed_time * 100UL) / (total_elapsed_time * CONFIG_FREERTOS_NUMBER_OF_CORES);
-            printf("| %s | %" PRIu32 " | %" PRIu32 "%%\n", start_array[i].pcTaskName, task_elapsed_time, percentage_time);
+            printf("| %s | %" PRIu32 " | %" PRIu32 "%% | %" PRIu32 "\n",
+                   start_array[i].pcTaskName, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark);
         }
     }
     for (int i = 0; i < start_array_size; i++)
