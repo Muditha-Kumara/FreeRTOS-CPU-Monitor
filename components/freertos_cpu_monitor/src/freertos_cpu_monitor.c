@@ -107,7 +107,7 @@ static esp_err_t print_real_time_stats(TickType_t xTicksToWait)
             {
                 core_elapsed_time[core_id] += task_elapsed_time;
             }
-            ESP_LOGI(TAG, "| %-16s | %-10d | %-10" PRIu32 " | %-8" PRIu32 "%% | %-16" PRIu32 " | %-6s | %-8u | %-8u |",
+            ESP_LOGI(TAG, "| %-16s | %-10d | %-10" PRIu32 " | %-7" PRIu32 "%% | %-16" PRIu32 " | %-6s | %-8u | %-8u |",
                      start_array[i].pcTaskName, core_id, task_elapsed_time, percentage_time, start_array[i].usStackHighWaterMark,
                      task_state_to_str(start_array[i].eCurrentState), start_array[i].uxCurrentPriority, start_array[i].uxBasePriority);
         }
